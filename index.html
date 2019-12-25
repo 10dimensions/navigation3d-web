@@ -1,16 +1,28 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <title>3D Navigation</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
-<head>
-	<title>Parcel Sandbox</title>
-	<meta charset="UTF-8" />
-</head>
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
+    />
 
-<body>
-	<div id="app"></div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r79/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stats.js/r16/Stats.min.js"></script>
 
-	<script src="src/index.js">
-	</script>
-</body>
+    <script src="http://rawgithub.com/dataarts/dat.gui/master/build/dat.gui.min.js"></script>
+    <script src="http://threejs.org/examples/js/controls/TrackballControls.js"></script>
+  </head>
 
+  <body>
+    <div id="app"></div>
+    <!-- three.js container -->
+    <div id="container"></div>
+    <!-- info on screen display -->
+
+    <script src="src/index.js"></script>
+    <script src="src/environment.js"></script>
+  </body>
 </html>
