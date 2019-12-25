@@ -9,19 +9,21 @@
       content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
     />
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r79/three.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/stats.js/r16/Stats.min.js"></script>
-
-    <script src="http://rawgithub.com/dataarts/dat.gui/master/build/dat.gui.min.js"></script>
-    <script src="http://threejs.org/examples/js/controls/TrackballControls.js"></script>
+    <script src="https://threejs.org/build/three.js"></script>
+    <script src="src/utils/Stats.min.js"></script>
+    <script src="src/utils/OrbitControls.js"></script>
+    <script src="src/utils/dat.gui.min.js"></script>
   </head>
 
   <body>
     <div id="app"></div>
+
     <!-- three.js container -->
-    <div id="container"></div>
+    <div id="container" class="container"></div>
     <!-- info on screen display -->
 
+    <script src="src/global.js"></script>
+    <script src="src/appui.js"></script>
     <script src="src/index.js"></script>
     <script src="src/environment.js"></script>
   </body>

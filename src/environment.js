@@ -1,12 +1,43 @@
+var raycaster = new THREE.Raycaster();
+var mouse = new THREE.Vector2();
+
 var stats, scene, renderer, composer;
-var camera, cameraControls;
-var Variables = function() {
-  this.speed = 1.0;
-};
-var variables = new Variables();
-var gui = new dat.GUI();
-gui.add(variables, "speed", 0, 2);
+var camera, cameraControls, controls;
+
 if (!init()) animate();
+
+
+function onMouseDown( event ) 
+{
+
+	// calculate mouse position in normalized device coordinates
+	// (-1 to +1) for both components
+
+	mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+  mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+  
+   // update the picking ray with the camera and mouse position
+	raycaster.setFromCamera( mouse, camera );
+
+  
+	// calculate objects intersecting the picking ray
+	var intersects = raycaster.intersectObjects( scene.children );
+
+	for ( var i = 0; i < intersects.length; i++ ) 
+  {
+    if(intersects[i].object.name === "map")
+    {
+      console.log("map found");
+    }
+		//intersects[ i ].object.material.color.set( 0xff0000 );
+
+  }
+
+
+}
+
+
+
 // init the scene
 function init() {
   renderer = new THREE.WebGLRenderer({
@@ -15,11 +46,14 @@ function init() {
   renderer.setClearColor(0xbbbbbb);
   renderer.setSize(window.innerWidth, window.innerHeight);
   document.getElementById("container").appendChild(renderer.domElement);
+
   // add Stats.js - https://github.com/mrdoob/stats.js
   stats = new Stats();
   stats.domElement.style.position = "absolute";
   stats.domElement.style.bottom = "0px";
   document.body.appendChild(stats.domElement);
+
+  
   // create a scene
   scene = new THREE.Scene();
   // put a camera in the scene
@@ -29,16 +63,32 @@ function init() {
     1,
     10000
   );
-  camera.position.set(0, 0, 5);
+  camera.position.set(0, 20, 25);
   scene.add(camera);
-  // create a camera contol
-  cameraControls = new THREE.TrackballControls(camera, renderer.domElement);
+
   // Objects
-  var geometry = new THREE.TorusGeometry(1, 0.42, 16, 16);
-  var material = new THREE.MeshNormalMaterial();
-  var mesh = new THREE.Mesh(geometry, material);
-  scene.add(mesh);
+
+  var planeGeometry = new THREE.PlaneGeometry(20, 20, 1, 1);
+  var texture = new THREE.TextureLoader().load( './assets/map2.png' );
+  var planeMaterial = new THREE.MeshLambertMaterial( { map: texture, transparent: true } );
+
+  var plane = new THREE.Mesh(planeGeometry, planeMaterial);
+  plane.name = "map"
+  // rotate and position the plane
+  plane.rotation.x = -0.5 * Math.PI;
+  plane.position.set(0,0,0);
+  // add the plane to the scene
+  scene.add(plane);
+
+
+
+  var gridXZ = new THREE.GridHelper(100, 100);
+  scene.add(gridXZ);
+
+  controls = new THREE.OrbitControls (camera, renderer.domElement);
 }
+
+
 // animation loop
 function animate() {
   requestAnimationFrame(animate);
@@ -47,20 +97,19 @@ function animate() {
   // update stats
   stats.update();
 }
+
+
 // render the scene
 function render() {
-  // variable which is increase by Math.PI every seconds - usefull for animation
-  var PIseconds = Date.now() * Math.PI;
+
   // update camera controls
-  cameraControls.update();
-  // animation of all objects
-  scene.traverse(function(object3d, i) {
-    if (object3d instanceof THREE.Mesh === false) return;
-    object3d.rotation.y =
-      variables.speed * PIseconds * 0.0003 * (i % 2 ? 1 : -1);
-    object3d.rotation.x =
-      variables.speed * PIseconds * 0.0002 * (i % 2 ? 1 : -1);
-  });
+  controls.update();
+
+ 
   // actually render the scene
   renderer.render(scene, camera);
 }
+render();
+//window.addEventListener( 'mousemove', onMouseMove, false );
+window.addEventListener( 'mousedown', onMouseDown, false );
+window.requestAnimationFrame(render);
