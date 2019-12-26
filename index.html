@@ -9,22 +9,27 @@
       content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
     />
 
+    <link rel="stylesheet" type="text/css" href="src/styles.css">
+
     <script src="https://threejs.org/build/three.js"></script>
     <script src="src/utils/Stats.min.js"></script>
     <script src="src/utils/OrbitControls.js"></script>
     <script src="src/utils/dat.gui.min.js"></script>
+    <script src="src/utils/STLLoader.js"></script>
+    <!-- <script src="src/utils/GLTFLoader.js"></script> -->
   </head>
 
   <body>
     <div id="app"></div>
 
     <!-- three.js container -->
-    <div id="container" class="container"></div>
+    <div id="container"></div>
     <!-- info on screen display -->
 
     <script src="src/global.js"></script>
+    <script src="src/spawner.js"></script>
     <script src="src/appui.js"></script>
-    <script src="src/index.js"></script>
+    <!-- <script src="src/index.js"></script> -->
     <script src="src/environment.js"></script>
   </body>
 </html>

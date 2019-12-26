@@ -2,7 +2,7 @@ var raycaster = new THREE.Raycaster();
 var mouse = new THREE.Vector2();
 
 var stats, scene, renderer, composer;
-var camera, cameraControls, controls;
+var camera, light, cameraControls, controls;
 
 if (!init()) animate();
 
@@ -23,13 +23,18 @@ function onMouseDown( event )
 	// calculate objects intersecting the picking ray
 	var intersects = raycaster.intersectObjects( scene.children );
 
+  if(intersects.length > 0)
+  {
+
+  }
+
 	for ( var i = 0; i < intersects.length; i++ ) 
   {
     if(intersects[i].object.name === "map")
     {
-      console.log("map found");
+      console.log(intersects[i].point);
+      SpawnNow(intersects[i].point);
     }
-		//intersects[ i ].object.material.color.set( 0xff0000 );
 
   }
 
@@ -66,21 +71,26 @@ function init() {
   camera.position.set(0, 20, 25);
   scene.add(camera);
 
+  light = new THREE.AmbientLight(0xffffff);
+  scene.add(light);
   // Objects
 
   var planeGeometry = new THREE.PlaneGeometry(20, 20, 1, 1);
-  var texture = new THREE.TextureLoader().load( './assets/map2.png' );
-  var planeMaterial = new THREE.MeshLambertMaterial( { map: texture, transparent: true } );
+  var texLoader = new THREE.TextureLoader();
+  texLoader.crossOrigin = "";
+  var texture = texLoader.load( '/assets/map2.png' );
+  var planeMaterial = new THREE.MeshStandardMaterial( { map: texture, transparent: true } );
 
   var plane = new THREE.Mesh(planeGeometry, planeMaterial);
   plane.name = "map"
-  // rotate and position the plane
+  
   plane.rotation.x = -0.5 * Math.PI;
   plane.position.set(0,0,0);
-  // add the plane to the scene
+
   scene.add(plane);
 
 
+// Add Wireframe Grid
 
   var gridXZ = new THREE.GridHelper(100, 100);
   scene.add(gridXZ);
@@ -89,27 +99,23 @@ function init() {
 }
 
 
-// animation loop
 function animate() {
   requestAnimationFrame(animate);
-  // do the render
   render();
-  // update stats
   stats.update();
 }
 
 
-// render the scene
 function render() {
 
-  // update camera controls
-  controls.update();
+  controls.update();                // update camera controls
 
- 
-  // actually render the scene
-  renderer.render(scene, camera);
+  renderer.render(scene, camera);   // render the scene
+
 }
 render();
+
+
 //window.addEventListener( 'mousemove', onMouseMove, false );
 window.addEventListener( 'mousedown', onMouseDown, false );
 window.requestAnimationFrame(render);

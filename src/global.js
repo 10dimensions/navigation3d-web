@@ -5,3 +5,7 @@ let parameters = {
     bot: false,
     cube: false
   };
+
+let scaleValues = {
+    cube: 0.5
+};
